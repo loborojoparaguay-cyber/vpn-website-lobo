@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - VPN Premium</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Panel de Administración</h2>
+            </div>
+            <form id="loginForm" onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                <p class="login-hint">Usuario por defecto: admin / Contraseña: admin123</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt"></i>
+                <span>VPN Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('clients')">
+                    <i class="fas fa-users"></i> Clientes
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('trials')">
+                    <i class="fas fa-gift"></i> Solicitudes de Prueba
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('alerts')">
+                    <i class="fas fa-exclamation-triangle"></i> Alertas
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="user-info">
+                    <span>Administrador</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalClients">0</h3>
+                            <p>Total Clientes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activeClients">0</h3>
+                            <p>Clientes Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="expiringSoon">0</h3>
+                            <p>Por Vencer (7 días)</p>
+                        </div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingPayments">0</h3>
+                            <p>Pagos Pendientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>Alertas Recientes</h3>
+                        <div id="recentAlerts"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clients Section -->
+            <section id="clientsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Gestión de Clientes</h2>
+                    <button class="btn btn-primary" onclick="openClientModal()">
+                        <i class="fas fa-plus"></i> Nuevo Cliente
+                    </button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="searchClient" placeholder="Buscar cliente..." onkeyup="filterClients()">
+                    <select id="filterStatus" onchange="filterClients()">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="vencido">Vencidos</option>
+                        <option value="por_vencer">Por Vencer</option>
+                    </select>
+                    <select id="filterPayment" onchange="filterClients()">
+                        <option value="">Todos los pagos</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="parcial">Pago Parcial</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>WhatsApp</th>
+                                <th>Plan</th>
+                                <th>Fecha Activación</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Estado Pago</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <!-- Clientes se llenarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Trials Section -->
+            <section id="trialsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Solicitudes de Prueba</h2>
+                    <button class="btn btn-secondary" onclick="clearTrials()">
+                        <i class="fas fa-trash"></i> Limpiar Procesadas
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>WhatsApp</th>
+                                <th>Email</th>
+                                <th>Plan Interés</th>
+                                <th>Comentarios</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trialsTableBody">
+                            <!-- Solicitudes se llenarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Alerts Section -->
+            <section id="alertsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Alertas y Notificaciones</h2>
+                </div>
+
+                <div class="alerts-container" id="alertsContainer">
+                    <!-- Alertas se llenarán dinámicamente -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para Agregar/Editar Cliente -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeClientModal()">&times;</span>
+            <h2 id="clientModalTitle">
+                <i class="fas fa-user-plus"></i> Nuevo Cliente
+            </h2>
+            <form id="clientForm" onsubmit="saveClient(event)">
+                <input type="hidden" id="clientId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientName">Nombre Completo *</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientWhatsapp">WhatsApp *</label>
+                        <input type="tel" id="clientWhatsapp" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientEmail">Email</label>
+                        <input type="email" id="clientEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPlan">Plan *</label>
+                        <select id="clientPlan" required>
+                            <option value="mensual">Mensual - $9.99</option>
+                            <option value="trimestral">Trimestral - $24.99</option>
+                            <option value="anual">Anual - $79.99</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientActivation">Fecha de Activación *</label>
+                        <input type="date" id="clientActivation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientExpiration">Fecha de Vencimiento *</label>
+                        <input type="date" id="clientExpiration" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientPaymentStatus">Estado de Pago *</label>
+                        <select id="clientPaymentStatus" required>
+                            <option value="pagado">Pagado</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="parcial">Pago Parcial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientAmount">Monto</label>
+                        <input type="number" id="clientAmount" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientNotes">Notas</label>
+                    <textarea id="clientNotes" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeClientModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cliente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

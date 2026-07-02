@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Premium - Conexión Segura y Rápida</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>VPN Premium</span>
+            </div>
+            <div class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#planes">Planes</a>
+                <a href="#caracteristicas">Características</a>
+                <a href="#contacto">Contacto</a>
+                <a href="admin.html" class="btn-admin"><i class="fas fa-lock"></i> Admin</a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Navega Seguro y Sin Límites</h1>
+                <p>Conexión VPN premium con la mejor velocidad y privacidad garantizada</p>
+                <div class="hero-buttons">
+                    <a href="#planes" class="btn btn-primary">Ver Planes</a>
+                    <button class="btn btn-secondary" onclick="openTrialModal()">
+                        <i class="fas fa-gift"></i> Solicitar Prueba Gratis
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-globe-americas"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <h2>¿Por Qué Elegirnos?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Alta Velocidad</h3>
+                    <p>Servidores optimizados para streaming y gaming sin lag</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Máxima Seguridad</h3>
+                    <p>Encriptación de nivel militar para tu privacidad</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Múltiples Servidores</h3>
+                    <p>Acceso a servidores en todo el mundo</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Soporte 24/7</h3>
+                    <p>Asistencia técnica siempre disponible</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Multi-Dispositivo</h3>
+                    <p>Compatible con todos tus dispositivos</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-infinity"></i>
+                    <h3>Sin Límites</h3>
+                    <p>Ancho de banda ilimitado para ti</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planes -->
+    <section class="pricing" id="planes">
+        <div class="container">
+            <h2>Nuestros Planes</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Mensual</h3>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">9.99</span>
+                        <span class="period">/mes</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Acceso a todos los servidores</li>
+                        <li><i class="fas fa-check"></i> Velocidad ilimitada</li>
+                        <li><i class="fas fa-check"></i> 3 dispositivos simultáneos</li>
+                        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual')">
+                        <i class="fab fa-whatsapp"></i> Contratar
+                    </button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="badge">MÁS POPULAR</div>
+                    <h3>Trimestral</h3>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">24.99</span>
+                        <span class="period">/3 meses</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Todo del plan mensual</li>
+                        <li><i class="fas fa-check"></i> 5 dispositivos simultáneos</li>
+                        <li><i class="fas fa-check"></i> Ahorra 17%</li>
+                        <li><i class="fas fa-check"></i> 1 día gratis de prueba</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Trimestral')">
+                        <i class="fab fa-whatsapp"></i> Contratar
+                    </button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Anual</h3>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">79.99</span>
+                        <span class="period">/año</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Todo del plan trimestral</li>
+                        <li><i class="fas fa-check"></i> Dispositivos ilimitados</li>
+                        <li><i class="fas fa-check"></i> Ahorra 33%</li>
+                        <li><i class="fas fa-check"></i> 3 días gratis de prueba</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Anual')">
+                        <i class="fab fa-whatsapp"></i> Contratar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="contact" id="contacto">
+        <div class="container">
+            <h2>¡Contáctanos!</h2>
+            <p>Estamos disponibles para atenderte por tus canales favoritos</p>
+            <div class="contact-buttons">
+                <a href="https://wa.me/1234567890?text=Hola,%20quiero%20información%20sobre%20la%20VPN" 
+                   class="contact-btn whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="https://t.me/tu_usuario" class="contact-btn telegram" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://instagram.com/tu_usuario" class="contact-btn instagram" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://facebook.com/tu_pagina" class="contact-btn facebook" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Solicitud de Prueba -->
+    <div id="trialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTrialModal()">&times;</span>
+            <h2><i class="fas fa-gift"></i> Solicitar Prueba Gratuita</h2>
+            <form id="trialForm" onsubmit="submitTrialRequest(event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo *</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp *</label>
+                    <input type="tel" id="whatsapp" placeholder="+1 234 567 8900" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="plan">Plan de Interés</label>
+                    <select id="plan">
+                        <option value="mensual">Mensual</option>
+                        <option value="trimestral">Trimestral</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Comentarios adicionales</label>
+                    <textarea id="message" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar Solicitud
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 VPN Premium. Todos los derechos reservados.</p>
+            <p>Navegación segura y privada para todos</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
