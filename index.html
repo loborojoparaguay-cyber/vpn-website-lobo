@@ -76,6 +76,20 @@
             animation: float 3s ease-in-out infinite;
         }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* ==== Imágenes personalizadas: sube logo.png y fondo.jpg al repositorio ==== */
+        .wolf-logo {
+            background-image: url("logo.png") !important;
+            background-size: cover !important;
+            border-radius: 50%;
+            background-color: #1a1a1a;
+        }
+        .hero::before { display: none !important; }
+        .hero {
+            background:
+                linear-gradient(rgba(10,4,4,0.55), rgba(10,4,4,0.8)),
+                url("fondo.jpg") center center / cover no-repeat,
+                linear-gradient(160deg, #1a1a1a 0%, #2a0505 55%, #5a0d0d 100%) !important;
+        }
 
         /* ===== Buttons ===== */
         .btn { padding: 0.8rem 1.8rem; border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
