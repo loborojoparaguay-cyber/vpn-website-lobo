@@ -63,10 +63,16 @@
         .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
         .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
         .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        /* ===== Logo de lobo (rojo y negro) ===== */
+        .wolf-logo {
+            display: inline-block; vertical-align: middle;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 195'%3E%3Cpolygon points='55,15 92,72 46,60' fill='%236b0000'/%3E%3Cpolygon points='145,15 108,72 154,60' fill='%236b0000'/%3E%3Cpolygon points='62,30 85,66 57,58' fill='%23d62828'/%3E%3Cpolygon points='138,30 115,66 143,58' fill='%23d62828'/%3E%3Cpolygon points='92,72 108,72 100,108' fill='%231a1a1a'/%3E%3Cpolygon points='46,60 92,72 100,108 72,120' fill='%23d62828'/%3E%3Cpolygon points='154,60 108,72 100,108 128,120' fill='%23d62828'/%3E%3Cpolygon points='46,60 72,120 62,146' fill='%232a0505'/%3E%3Cpolygon points='154,60 128,120 138,146' fill='%232a0505'/%3E%3Cpolygon points='72,120 100,108 100,150 80,148' fill='%238b0000'/%3E%3Cpolygon points='128,120 100,108 100,150 120,148' fill='%238b0000'/%3E%3Cpolygon points='80,148 120,148 100,178' fill='%23d62828'/%3E%3Cpolygon points='100,150 120,148 100,178' fill='%23a5121a'/%3E%3Cpolygon points='93,166 107,166 100,180' fill='%230a0a0a'/%3E%3Cpolygon points='72,92 88,88 82,102' fill='%23ff5252'/%3E%3Cpolygon points='128,92 112,88 118,102' fill='%23ff5252'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: center; background-size: contain;
+        }
         .hero-image { display: flex; justify-content: center; align-items: center; }
-        .hero-image .wolf-emoji {
-            font-size: 13rem; line-height: 1;
-            filter: drop-shadow(0 0 40px rgba(214,40,40,0.8)) drop-shadow(0 0 15px rgba(255,82,82,0.6));
+        .hero-image .hero-wolf {
+            width: 340px; height: 340px; max-width: 80vw;
+            filter: drop-shadow(0 0 40px rgba(214,40,40,0.85)) drop-shadow(0 0 15px rgba(255,82,82,0.6));
             animation: float 3s ease-in-out infinite;
         }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -242,7 +248,7 @@
     <nav class="navbar">
         <div class="container">
             <div class="logo">
-                <span style="font-size:1.8rem;">🐺</span>
+                <span class="wolf-logo" style="width:40px;height:40px;"></span>
                 <span>VPN Lobo Rojo</span>
             </div>
             <div class="nav-links" id="navLinks">
@@ -266,7 +272,7 @@
                     <button class="btn btn-secondary" onclick="openTrialModal()"><i class="fas fa-gift"></i> Solicitar Prueba Gratis</button>
                 </div>
             </div>
-            <div class="hero-image"><span class="wolf-emoji">🐺</span></div>
+            <div class="hero-image"><span class="wolf-logo hero-wolf"></span></div>
         </div>
     </section>
 
@@ -346,7 +352,7 @@
     <!-- Login -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
-            <div class="login-header"><span style="font-size:3.5rem;">🐺</span><h2>Panel Lobo Rojo</h2></div>
+            <div class="login-header"><span class="wolf-logo" style="width:90px;height:90px;"></span><h2>Panel Lobo Rojo</h2></div>
             <form id="loginForm" onsubmit="login(event)">
                 <div class="form-group"><label for="username">Usuario</label><input type="text" id="username" required></div>
                 <div class="form-group"><label for="password">Contraseña</label><input type="password" id="password" required></div>
@@ -360,7 +366,7 @@
     <!-- Dashboard -->
     <div id="adminDashboard" class="admin-dashboard" style="display:none;">
         <aside class="sidebar">
-            <div class="sidebar-header"><span style="font-size:2rem;">🐺</span><span>Lobo Rojo</span></div>
+            <div class="sidebar-header"><span class="wolf-logo" style="width:42px;height:42px;"></span><span>Lobo Rojo</span></div>
             <nav class="sidebar-nav">
                 <a class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a>
                 <a class="nav-item" onclick="showSection('clients')"><i class="fas fa-users"></i> Clientes</a>
