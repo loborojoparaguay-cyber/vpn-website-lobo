@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPN Premium - Conexión Segura y Rápida</title>
+    <title>VPN Lobo Rojo - Conexión Segura y Rápida</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== Reset y Variables ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --accent-color: #f093fb;
+            --primary-color: #d62828;
+            --secondary-color: #8b0000;
+            --accent-color: #ff5252;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
-            --dark: #1f2937;
-            --light: #f9fafb;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
             --gray: #6b7280;
             --border-radius: 12px;
             --transition: all 0.3s ease;
@@ -44,13 +44,31 @@
         .menu-toggle span { width: 25px; height: 3px; background: white; border-radius: 3px; transition: var(--transition); }
 
         /* ===== Hero ===== */
-        .hero { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 150px 0 80px; margin-top: 70px; }
-        .hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero {
+            position: relative; overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 30%, rgba(214,40,40,0.55) 0%, rgba(139,0,0,0.25) 35%, transparent 70%),
+                linear-gradient(160deg, #1a1a1a 0%, #2a0505 55%, #5a0d0d 100%);
+            color: white; padding: 150px 0 80px; margin-top: 70px;
+        }
+        /* Silueta de lobo de fondo */
+        .hero::before {
+            content: ""; position: absolute; right: 3%; top: 50%; transform: translateY(-50%);
+            width: 60%; height: 90%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23000000' d='M256 24l-30 60-52-18 20 58-64 8 40 46-66 40 60 18-40 52 62-6 6 66 44-40 34 58 34-58 44 40 6-66 62 6-40-52 60-18-66-40 40-46-64-8 20-58-52 18z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: center; background-size: contain;
+            opacity: 0.12; pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
         .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
         .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
         .hero-image { display: flex; justify-content: center; align-items: center; }
-        .hero-image i { font-size: 15rem; opacity: 0.3; animation: float 3s ease-in-out infinite; }
+        .hero-image .wolf-emoji {
+            font-size: 13rem; line-height: 1;
+            filter: drop-shadow(0 0 40px rgba(214,40,40,0.8)) drop-shadow(0 0 15px rgba(255,82,82,0.6));
+            animation: float 3s ease-in-out infinite;
+        }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         /* ===== Buttons ===== */
@@ -224,8 +242,8 @@
     <nav class="navbar">
         <div class="container">
             <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <span>VPN Premium</span>
+                <span style="font-size:1.8rem;">🐺</span>
+                <span>VPN Lobo Rojo</span>
             </div>
             <div class="nav-links" id="navLinks">
                 <a onclick="scrollToSection('inicio')">Inicio</a>
@@ -241,14 +259,14 @@
     <section class="hero" id="inicio">
         <div class="container">
             <div class="hero-content">
-                <h1>Navega Seguro y Sin Límites</h1>
-                <p>Conexión VPN premium con la mejor velocidad y privacidad garantizada</p>
+                <h1>Navega Seguro y Sin Límites 🐺</h1>
+                <p>La manada más veloz y segura. Conexión VPN premium con la mejor velocidad y privacidad garantizada</p>
                 <div class="hero-buttons">
                     <a onclick="scrollToSection('planes')" class="btn btn-primary">Ver Planes</a>
                     <button class="btn btn-secondary" onclick="openTrialModal()"><i class="fas fa-gift"></i> Solicitar Prueba Gratis</button>
                 </div>
             </div>
-            <div class="hero-image"><i class="fas fa-globe-americas"></i></div>
+            <div class="hero-image"><span class="wolf-emoji">🐺</span></div>
         </div>
     </section>
 
@@ -269,40 +287,34 @@
     <section class="pricing" id="planes">
         <div class="container">
             <h2>Nuestros Planes</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Mensual</h3>
-                    <div class="price"><span class="currency">$</span><span class="amount">9.99</span><span class="period">/mes</span></div>
+            <p style="text-align:center; color:var(--gray); margin-bottom:2.5rem; margin-top:-2rem;">Elige tu país y paga en tu moneda 🐺</p>
+            <div class="pricing-grid" style="max-width:760px;">
+                <div class="pricing-card featured">
+                    <div class="badge">🇵🇾 PARAGUAY</div>
+                    <h3>Plan Mensual</h3>
+                    <div class="price"><span class="currency">₲</span><span class="amount">40.000</span><span class="period">/mes</span></div>
                     <ul class="features-list">
                         <li><i class="fas fa-check"></i> Acceso a todos los servidores</li>
                         <li><i class="fas fa-check"></i> Velocidad ilimitada</li>
-                        <li><i class="fas fa-check"></i> 3 dispositivos simultáneos</li>
-                        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                        <li><i class="fas fa-check"></i> Multi-dispositivo</li>
+                        <li><i class="fas fa-check"></i> Soporte por WhatsApp</li>
+                        <li><i class="fas fa-check"></i> Prueba gratis disponible</li>
                     </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual')"><i class="fab fa-whatsapp"></i> Contratar</button>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual Paraguay (40.000 Gs)')"><i class="fab fa-whatsapp"></i> Contratar</button>
                 </div>
+
                 <div class="pricing-card featured">
-                    <div class="badge">MÁS POPULAR</div>
-                    <h3>Trimestral</h3>
-                    <div class="price"><span class="currency">$</span><span class="amount">24.99</span><span class="period">/3 meses</span></div>
+                    <div class="badge">🇦🇷 ARGENTINA</div>
+                    <h3>Plan Mensual</h3>
+                    <div class="price"><span class="currency">$</span><span class="amount">5.500</span><span class="period">/mes</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Todo del plan mensual</li>
-                        <li><i class="fas fa-check"></i> 5 dispositivos simultáneos</li>
-                        <li><i class="fas fa-check"></i> Ahorra 17%</li>
-                        <li><i class="fas fa-check"></i> 1 día gratis de prueba</li>
+                        <li><i class="fas fa-check"></i> Acceso a todos los servidores</li>
+                        <li><i class="fas fa-check"></i> Velocidad ilimitada</li>
+                        <li><i class="fas fa-check"></i> Multi-dispositivo</li>
+                        <li><i class="fas fa-check"></i> Soporte por WhatsApp</li>
+                        <li><i class="fas fa-check"></i> Prueba gratis disponible</li>
                     </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Trimestral')"><i class="fab fa-whatsapp"></i> Contratar</button>
-                </div>
-                <div class="pricing-card">
-                    <h3>Anual</h3>
-                    <div class="price"><span class="currency">$</span><span class="amount">79.99</span><span class="period">/año</span></div>
-                    <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Todo del plan trimestral</li>
-                        <li><i class="fas fa-check"></i> Dispositivos ilimitados</li>
-                        <li><i class="fas fa-check"></i> Ahorra 33%</li>
-                        <li><i class="fas fa-check"></i> 3 días gratis de prueba</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Anual')"><i class="fab fa-whatsapp"></i> Contratar</button>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual Argentina ($5.500)')"><i class="fab fa-whatsapp"></i> Contratar</button>
                 </div>
             </div>
         </div>
@@ -313,7 +325,7 @@
             <h2>¡Contáctanos!</h2>
             <p>Estamos disponibles para atenderte por tus canales favoritos</p>
             <div class="contact-buttons">
-                <a href="https://wa.me/1234567890?text=Hola,%20quiero%20información%20sobre%20la%20VPN" class="contact-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+                <a href="https://wa.me/595991907709?text=Hola,%20quiero%20información%20sobre%20la%20VPN%20Lobo%20Rojo" class="contact-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
                 <a href="https://t.me/tu_usuario" class="contact-btn telegram" target="_blank"><i class="fab fa-telegram"></i><span>Telegram</span></a>
                 <a href="https://instagram.com/tu_usuario" class="contact-btn instagram" target="_blank"><i class="fab fa-instagram"></i><span>Instagram</span></a>
                 <a href="https://facebook.com/tu_pagina" class="contact-btn facebook" target="_blank"><i class="fab fa-facebook"></i><span>Facebook</span></a>
@@ -323,7 +335,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 VPN Premium. Todos los derechos reservados.</p>
+            <p>&copy; 2026 VPN Lobo Rojo 🐺. Todos los derechos reservados.</p>
             <p>Navegación segura y privada para todos</p>
         </div>
     </footer>
@@ -334,7 +346,7 @@
     <!-- Login -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
-            <div class="login-header"><i class="fas fa-shield-alt"></i><h2>Panel de Administración</h2></div>
+            <div class="login-header"><span style="font-size:3.5rem;">🐺</span><h2>Panel Lobo Rojo</h2></div>
             <form id="loginForm" onsubmit="login(event)">
                 <div class="form-group"><label for="username">Usuario</label><input type="text" id="username" required></div>
                 <div class="form-group"><label for="password">Contraseña</label><input type="password" id="password" required></div>
@@ -348,7 +360,7 @@
     <!-- Dashboard -->
     <div id="adminDashboard" class="admin-dashboard" style="display:none;">
         <aside class="sidebar">
-            <div class="sidebar-header"><i class="fas fa-shield-alt"></i><span>VPN Admin</span></div>
+            <div class="sidebar-header"><span style="font-size:2rem;">🐺</span><span>Lobo Rojo</span></div>
             <nav class="sidebar-nav">
                 <a class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a>
                 <a class="nav-item" onclick="showSection('clients')"><i class="fas fa-users"></i> Clientes</a>
@@ -439,7 +451,7 @@
             <div class="form-group"><label for="whatsapp">WhatsApp *</label><input type="tel" id="whatsapp" placeholder="+1 234 567 8900" required></div>
             <div class="form-group"><label for="email">Email</label><input type="email" id="email"></div>
             <div class="form-group"><label for="plan">Plan de Interés</label>
-                <select id="plan"><option value="mensual">Mensual</option><option value="trimestral">Trimestral</option><option value="anual">Anual</option></select>
+                <select id="plan"><option value="paraguay">🇵🇾 Paraguay - 40.000 Gs/mes</option><option value="argentina">🇦🇷 Argentina - $5.500/mes</option></select>
             </div>
             <div class="form-group"><label for="message">Comentarios adicionales</label><textarea id="message" rows="3"></textarea></div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
@@ -461,7 +473,7 @@
             <div class="form-row">
                 <div class="form-group"><label for="clientEmail">Email</label><input type="email" id="clientEmail"></div>
                 <div class="form-group"><label for="clientPlan">Plan *</label>
-                    <select id="clientPlan" required><option value="mensual">Mensual - $9.99</option><option value="trimestral">Trimestral - $24.99</option><option value="anual">Anual - $79.99</option></select>
+                    <select id="clientPlan" required><option value="paraguay">🇵🇾 Paraguay - 40.000 Gs/mes</option><option value="argentina">🇦🇷 Argentina - $5.500/mes</option></select>
                 </div>
             </div>
             <div class="form-row">
@@ -485,8 +497,8 @@
 
 <script>
     /* ============ CONFIGURACIÓN: CAMBIA TU NÚMERO DE WHATSAPP AQUÍ ============ */
-    /* Formato internacional SIN el símbolo +. Ejemplo Paraguay: 595981234567 */
-    const MI_WHATSAPP = '1234567890';
+    /* Formato internacional SIN el símbolo +. Paraguay: 595 + número */
+    const MI_WHATSAPP = '595991907709';
 
     /* ============ CREDENCIALES DEL ADMIN (cámbialas) ============ */
     const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
@@ -516,7 +528,7 @@
 
     /* ============ WHATSAPP + PRUEBAS ============ */
     function contactWhatsApp(plan) {
-        const message = `Hola! Estoy interesado en el ${plan} de VPN Premium`;
+        const message = `Hola! Estoy interesado en el ${plan} de VPN Lobo Rojo 🐺`;
         window.open(`https://wa.me/${MI_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     }
     function openTrialModal() { document.getElementById('trialModal').style.display = 'block'; }
@@ -754,9 +766,8 @@
         const act = document.getElementById('clientActivation').value;
         if (!plan || !act) return;
         let exp = new Date(act);
-        if (plan === 'mensual') exp.setMonth(exp.getMonth() + 1);
-        else if (plan === 'trimestral') exp.setMonth(exp.getMonth() + 3);
-        else if (plan === 'anual') exp.setFullYear(exp.getFullYear() + 1);
+        // Ambos planes (Paraguay y Argentina) son mensuales: +1 mes
+        exp.setMonth(exp.getMonth() + 1);
         document.getElementById('clientExpiration').value = exp.toISOString().split('T')[0];
     }
     document.getElementById('clientPlan')?.addEventListener('change', recalcExpiration);

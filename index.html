@@ -3,226 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPN Premium - Conexión Segura y Rápida</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>VPN Lobo Rojo - Conexión Segura y Rápida</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== Reset y Variables ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #d62828;
+            --secondary-color: #8b0000;
+            --accent-color: #ff5252;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --gray: #6b7280;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6; color: var(--dark); background: var(--light);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* ===== Navbar ===== */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; color: white; font-size: 1.5rem; font-weight: bold; }
+        .logo i { font-size: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; transition: var(--transition); font-weight: 500; cursor: pointer; }
+        .nav-links a:hover { color: var(--accent-color); }
+        .btn-admin { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: var(--border-radius); backdrop-filter: blur(10px); }
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 3px; background: white; border-radius: 3px; transition: var(--transition); }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative; overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 30%, rgba(214,40,40,0.55) 0%, rgba(139,0,0,0.25) 35%, transparent 70%),
+                linear-gradient(160deg, #1a1a1a 0%, #2a0505 55%, #5a0d0d 100%);
+            color: white; padding: 150px 0 80px; margin-top: 70px;
+        }
+        /* Silueta de lobo de fondo */
+        .hero::before {
+            content: ""; position: absolute; right: 3%; top: 50%; transform: translateY(-50%);
+            width: 60%; height: 90%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23000000' d='M256 24l-30 60-52-18 20 58-64 8 40 46-66 40 60 18-40 52 62-6 6 66 44-40 34 58 34-58 44 40 6-66 62 6-40-52 60-18-66-40 40-46-64-8 20-58-52 18z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: center; background-size: contain;
+            opacity: 0.12; pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .hero-image { display: flex; justify-content: center; align-items: center; }
+        .hero-image .wolf-emoji {
+            font-size: 13rem; line-height: 1;
+            filter: drop-shadow(0 0 40px rgba(214,40,40,0.8)) drop-shadow(0 0 15px rgba(255,82,82,0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* ===== Buttons ===== */
+        .btn { padding: 0.8rem 1.8rem; border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: white; color: var(--primary-color); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-secondary { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px); border: 2px solid white; }
+        .btn-secondary:hover { background: white; color: var(--primary-color); }
+
+        /* ===== Features ===== */
+        .features { padding: 80px 0; background: white; }
+        .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--dark); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .feature-card { background: var(--light); padding: 2rem; border-radius: var(--border-radius); text-align: center; transition: var(--transition); border: 2px solid transparent; }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(102,126,234,0.2); }
+        .feature-card i { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--dark); }
+        .feature-card p { color: var(--gray); }
+
+        /* ===== Pricing ===== */
+        .pricing { padding: 80px 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+        .pricing h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--dark); }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; }
+        .pricing-card { background: white; padding: 2.5rem; border-radius: var(--border-radius); text-align: center; transition: var(--transition); position: relative; border: 3px solid transparent; }
+        .pricing-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+        .pricing-card.featured { border-color: var(--primary-color); transform: scale(1.05); }
+        .pricing-card .badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--primary-color); color: white; padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .pricing-card h3 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--dark); }
+        .price { margin: 1.5rem 0; }
+        .price .currency { font-size: 1.5rem; vertical-align: top; }
+        .price .amount { font-size: 3rem; font-weight: bold; color: var(--primary-color); }
+        .price .period { color: var(--gray); font-size: 1rem; }
+        .features-list { list-style: none; margin: 2rem 0; text-align: left; }
+        .features-list li { padding: 0.8rem 0; border-bottom: 1px solid var(--light); }
+        .features-list i { color: var(--success-color); margin-right: 0.5rem; }
+
+        /* ===== Contact ===== */
+        .contact { padding: 80px 0; background: white; text-align: center; }
+        .contact h2 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--dark); }
+        .contact p { font-size: 1.2rem; color: var(--gray); margin-bottom: 3rem; }
+        .contact-buttons { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .contact-btn { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 2rem; border-radius: var(--border-radius); text-decoration: none; color: white; transition: var(--transition); min-width: 150px; }
+        .contact-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .contact-btn i { font-size: 3rem; }
+        .contact-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .contact-btn.telegram { background: linear-gradient(135deg, #0088cc, #005f99); }
+        .contact-btn.instagram { background: linear-gradient(135deg, #e1306c, #fd1d1d, #f77737); }
+        .contact-btn.facebook { background: linear-gradient(135deg, #3b5998, #2d4373); }
+
+        /* ===== Modal ===== */
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 5% auto; padding: 2rem; border-radius: var(--border-radius); max-width: 500px; position: relative; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 2rem; font-weight: bold; color: var(--gray); cursor: pointer; transition: var(--transition); }
+        .close:hover { color: var(--danger-color); }
+        .modal-content h2 { margin-bottom: 1.5rem; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem; }
+
+        /* ===== Forms ===== */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 2px solid var(--light); border-radius: var(--border-radius); font-size: 1rem; transition: var(--transition); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
+
+        /* ===== Footer ===== */
+        footer { background: var(--dark); color: white; text-align: center; padding: 2rem 0; }
+        footer p { margin: 0.5rem 0; }
+
+        /* ===== Admin ===== */
+        .admin-body { background: #f5f7fa; }
+        .login-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); }
+        .login-box { background: white; padding: 3rem; border-radius: var(--border-radius); box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-header i { font-size: 4rem; color: var(--primary-color); }
+        .login-header h2 { color: var(--dark); margin-top: 1rem; }
+        .login-hint { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 1rem; }
+        .btn-block { width: 100%; justify-content: center; }
+        .admin-dashboard { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar-header { padding: 2rem 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 1.5rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .sidebar-header i { font-size: 2rem; }
+        .sidebar-nav { padding: 1rem 0; }
+        .nav-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; color: white; text-decoration: none; transition: var(--transition); border-left: 4px solid transparent; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); border-left-color: white; }
+        .nav-item i { width: 20px; }
+        .main-content { margin-left: 260px; flex: 1; padding: 2rem; width: calc(100% - 260px); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light); }
+        .top-bar h1 { color: var(--dark); font-size: 2rem; }
+        .user-info { display: flex; align-items: center; gap: 1rem; color: var(--gray); }
+        .user-info i { font-size: 2rem; color: var(--primary-color); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: var(--border-radius); display: flex; align-items: center; gap: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: var(--transition); }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .stat-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; }
+        .stat-card.blue .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .stat-card.green .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card.orange .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card.red .stat-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .stat-info h3 { font-size: 2rem; color: var(--dark); margin-bottom: 0.25rem; }
+        .stat-info p { color: var(--gray); font-size: 0.9rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .section-header h2 { color: var(--dark); font-size: 1.8rem; }
+        .filters { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .filters input, .filters select { padding: 0.8rem; border: 2px solid var(--light); border-radius: var(--border-radius); font-size: 1rem; flex: 1; min-width: 200px; }
+        .table-container { background: white; border-radius: var(--border-radius); box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .data-table th { padding: 1rem; text-align: left; font-weight: 600; }
+        .data-table td { padding: 1rem; border-bottom: 1px solid var(--light); }
+        .data-table tbody tr { transition: var(--transition); }
+        .data-table tbody tr:hover { background: var(--light); }
+        .badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fed7aa; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .action-buttons { display: flex; gap: 0.5rem; }
+        .btn-icon { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border: none; border-radius: var(--border-radius); cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+        .btn-icon.edit { background: #dbeafe; color: #1e40af; }
+        .btn-icon.delete { background: #fee2e2; color: #991b1b; }
+        .btn-icon.whatsapp { background: #d1fae5; color: #065f46; }
+        .btn-icon:hover { transform: scale(1.1); }
+        .dashboard-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
+        .chart-card { background: white; padding: 1.5rem; border-radius: var(--border-radius); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .chart-card h3 { color: var(--dark); margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light); }
+        .alerts-container { display: flex; flex-direction: column; gap: 1rem; }
+        .alert { background: white; padding: 1.5rem; border-radius: var(--border-radius); border-left: 4px solid; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .alert.warning { border-left-color: var(--warning-color); }
+        .alert.danger { border-left-color: var(--danger-color); }
+        .alert-content { flex: 1; }
+        .alert-content h4 { color: var(--dark); margin-bottom: 0.5rem; }
+        .alert-content p { color: var(--gray); }
+        .modal-large { max-width: 700px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
+        .empty-state { text-align: center; padding: 3rem; color: var(--gray); }
+        .empty-state i { font-size: 4rem; margin-bottom: 1rem; opacity: 0.3; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) { .sidebar { width: 200px; } .main-content { margin-left: 200px; width: calc(100% - 200px); } }
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { position: absolute; top: 70px; left: 0; width: 100%; background: var(--primary-color); flex-direction: column; padding: 2rem 0; display: none; }
+            .nav-links.active { display: flex; }
+            .hero .container { grid-template-columns: 1fr; text-align: center; }
+            .hero-content h1 { font-size: 2rem; }
+            .hero-image i { font-size: 8rem; }
+            .hero-buttons { justify-content: center; }
+            .pricing-card.featured { transform: scale(1); }
+            .contact-buttons { flex-direction: column; align-items: center; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+            .filters input, .filters select { width: 100%; }
+            .form-row { grid-template-columns: 1fr; }
+            .data-table { min-width: 800px; }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 1.5rem; }
+            .features h2, .pricing h2, .contact h2 { font-size: 2rem; }
+            .modal-content { margin: 20% auto; padding: 1.5rem; }
+            .login-box { padding: 2rem; }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navegación -->
+
+<!-- ==================== SITIO PÚBLICO ==================== -->
+<div id="publicSite">
     <nav class="navbar">
         <div class="container">
             <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <span>VPN Premium</span>
+                <span style="font-size:1.8rem;">🐺</span>
+                <span>VPN Lobo Rojo</span>
             </div>
-            <div class="nav-links">
-                <a href="#inicio">Inicio</a>
-                <a href="#planes">Planes</a>
-                <a href="#caracteristicas">Características</a>
-                <a href="#contacto">Contacto</a>
-                <a href="admin.html" class="btn-admin"><i class="fas fa-lock"></i> Admin</a>
+            <div class="nav-links" id="navLinks">
+                <a onclick="scrollToSection('inicio')">Inicio</a>
+                <a onclick="scrollToSection('planes')">Planes</a>
+                <a onclick="scrollToSection('caracteristicas')">Características</a>
+                <a onclick="scrollToSection('contacto')">Contacto</a>
+                <a onclick="openAdmin()" class="btn-admin"><i class="fas fa-lock"></i> Admin</a>
             </div>
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="inicio">
         <div class="container">
             <div class="hero-content">
-                <h1>Navega Seguro y Sin Límites</h1>
-                <p>Conexión VPN premium con la mejor velocidad y privacidad garantizada</p>
+                <h1>Navega Seguro y Sin Límites 🐺</h1>
+                <p>La manada más veloz y segura. Conexión VPN premium con la mejor velocidad y privacidad garantizada</p>
                 <div class="hero-buttons">
-                    <a href="#planes" class="btn btn-primary">Ver Planes</a>
-                    <button class="btn btn-secondary" onclick="openTrialModal()">
-                        <i class="fas fa-gift"></i> Solicitar Prueba Gratis
-                    </button>
+                    <a onclick="scrollToSection('planes')" class="btn btn-primary">Ver Planes</a>
+                    <button class="btn btn-secondary" onclick="openTrialModal()"><i class="fas fa-gift"></i> Solicitar Prueba Gratis</button>
                 </div>
             </div>
-            <div class="hero-image">
-                <i class="fas fa-globe-americas"></i>
-            </div>
+            <div class="hero-image"><span class="wolf-emoji">🐺</span></div>
         </div>
     </section>
 
-    <!-- Características -->
     <section class="features" id="caracteristicas">
         <div class="container">
             <h2>¿Por Qué Elegirnos?</h2>
             <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>Alta Velocidad</h3>
-                    <p>Servidores optimizados para streaming y gaming sin lag</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Máxima Seguridad</h3>
-                    <p>Encriptación de nivel militar para tu privacidad</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-server"></i>
-                    <h3>Múltiples Servidores</h3>
-                    <p>Acceso a servidores en todo el mundo</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-headset"></i>
-                    <h3>Soporte 24/7</h3>
-                    <p>Asistencia técnica siempre disponible</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>Multi-Dispositivo</h3>
-                    <p>Compatible con todos tus dispositivos</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-infinity"></i>
-                    <h3>Sin Límites</h3>
-                    <p>Ancho de banda ilimitado para ti</p>
-                </div>
+                <div class="feature-card"><i class="fas fa-bolt"></i><h3>Alta Velocidad</h3><p>Servidores optimizados para streaming y gaming sin lag</p></div>
+                <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Máxima Seguridad</h3><p>Encriptación de nivel militar para tu privacidad</p></div>
+                <div class="feature-card"><i class="fas fa-server"></i><h3>Múltiples Servidores</h3><p>Acceso a servidores en todo el mundo</p></div>
+                <div class="feature-card"><i class="fas fa-headset"></i><h3>Soporte 24/7</h3><p>Asistencia técnica siempre disponible</p></div>
+                <div class="feature-card"><i class="fas fa-mobile-alt"></i><h3>Multi-Dispositivo</h3><p>Compatible con todos tus dispositivos</p></div>
+                <div class="feature-card"><i class="fas fa-infinity"></i><h3>Sin Límites</h3><p>Ancho de banda ilimitado para ti</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Planes -->
     <section class="pricing" id="planes">
         <div class="container">
             <h2>Nuestros Planes</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Mensual</h3>
-                    <div class="price">
-                        <span class="currency">$</span>
-                        <span class="amount">9.99</span>
-                        <span class="period">/mes</span>
-                    </div>
+            <p style="text-align:center; color:var(--gray); margin-bottom:2.5rem; margin-top:-2rem;">Elige tu país y paga en tu moneda 🐺</p>
+            <div class="pricing-grid" style="max-width:760px;">
+                <div class="pricing-card featured">
+                    <div class="badge">🇵🇾 PARAGUAY</div>
+                    <h3>Plan Mensual</h3>
+                    <div class="price"><span class="currency">₲</span><span class="amount">40.000</span><span class="period">/mes</span></div>
                     <ul class="features-list">
                         <li><i class="fas fa-check"></i> Acceso a todos los servidores</li>
                         <li><i class="fas fa-check"></i> Velocidad ilimitada</li>
-                        <li><i class="fas fa-check"></i> 3 dispositivos simultáneos</li>
-                        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                        <li><i class="fas fa-check"></i> Multi-dispositivo</li>
+                        <li><i class="fas fa-check"></i> Soporte por WhatsApp</li>
+                        <li><i class="fas fa-check"></i> Prueba gratis disponible</li>
                     </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual')">
-                        <i class="fab fa-whatsapp"></i> Contratar
-                    </button>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual Paraguay (40.000 Gs)')"><i class="fab fa-whatsapp"></i> Contratar</button>
                 </div>
 
                 <div class="pricing-card featured">
-                    <div class="badge">MÁS POPULAR</div>
-                    <h3>Trimestral</h3>
-                    <div class="price">
-                        <span class="currency">$</span>
-                        <span class="amount">24.99</span>
-                        <span class="period">/3 meses</span>
-                    </div>
+                    <div class="badge">🇦🇷 ARGENTINA</div>
+                    <h3>Plan Mensual</h3>
+                    <div class="price"><span class="currency">$</span><span class="amount">5.500</span><span class="period">/mes</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Todo del plan mensual</li>
-                        <li><i class="fas fa-check"></i> 5 dispositivos simultáneos</li>
-                        <li><i class="fas fa-check"></i> Ahorra 17%</li>
-                        <li><i class="fas fa-check"></i> 1 día gratis de prueba</li>
+                        <li><i class="fas fa-check"></i> Acceso a todos los servidores</li>
+                        <li><i class="fas fa-check"></i> Velocidad ilimitada</li>
+                        <li><i class="fas fa-check"></i> Multi-dispositivo</li>
+                        <li><i class="fas fa-check"></i> Soporte por WhatsApp</li>
+                        <li><i class="fas fa-check"></i> Prueba gratis disponible</li>
                     </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Trimestral')">
-                        <i class="fab fa-whatsapp"></i> Contratar
-                    </button>
-                </div>
-
-                <div class="pricing-card">
-                    <h3>Anual</h3>
-                    <div class="price">
-                        <span class="currency">$</span>
-                        <span class="amount">79.99</span>
-                        <span class="period">/año</span>
-                    </div>
-                    <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Todo del plan trimestral</li>
-                        <li><i class="fas fa-check"></i> Dispositivos ilimitados</li>
-                        <li><i class="fas fa-check"></i> Ahorra 33%</li>
-                        <li><i class="fas fa-check"></i> 3 días gratis de prueba</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Anual')">
-                        <i class="fab fa-whatsapp"></i> Contratar
-                    </button>
+                    <button class="btn btn-primary" onclick="contactWhatsApp('Plan Mensual Argentina ($5.500)')"><i class="fab fa-whatsapp"></i> Contratar</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contacto -->
     <section class="contact" id="contacto">
         <div class="container">
             <h2>¡Contáctanos!</h2>
             <p>Estamos disponibles para atenderte por tus canales favoritos</p>
             <div class="contact-buttons">
-                <a href="https://wa.me/1234567890?text=Hola,%20quiero%20información%20sobre%20la%20VPN" 
-                   class="contact-btn whatsapp" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp</span>
-                </a>
-                <a href="https://t.me/tu_usuario" class="contact-btn telegram" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                    <span>Telegram</span>
-                </a>
-                <a href="https://instagram.com/tu_usuario" class="contact-btn instagram" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://facebook.com/tu_pagina" class="contact-btn facebook" target="_blank">
-                    <i class="fab fa-facebook"></i>
-                    <span>Facebook</span>
-                </a>
+                <a href="https://wa.me/595991907709?text=Hola,%20quiero%20información%20sobre%20la%20VPN%20Lobo%20Rojo" class="contact-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+                <a href="https://t.me/tu_usuario" class="contact-btn telegram" target="_blank"><i class="fab fa-telegram"></i><span>Telegram</span></a>
+                <a href="https://instagram.com/tu_usuario" class="contact-btn instagram" target="_blank"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+                <a href="https://facebook.com/tu_pagina" class="contact-btn facebook" target="_blank"><i class="fab fa-facebook"></i><span>Facebook</span></a>
             </div>
         </div>
     </section>
 
-    <!-- Modal de Solicitud de Prueba -->
-    <div id="trialModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeTrialModal()">&times;</span>
-            <h2><i class="fas fa-gift"></i> Solicitar Prueba Gratuita</h2>
-            <form id="trialForm" onsubmit="submitTrialRequest(event)">
-                <div class="form-group">
-                    <label for="name">Nombre Completo *</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="whatsapp">WhatsApp *</label>
-                    <input type="tel" id="whatsapp" placeholder="+1 234 567 8900" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="form-group">
-                    <label for="plan">Plan de Interés</label>
-                    <select id="plan">
-                        <option value="mensual">Mensual</option>
-                        <option value="trimestral">Trimestral</option>
-                        <option value="anual">Anual</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="message">Comentarios adicionales</label>
-                    <textarea id="message" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Enviar Solicitud
-                </button>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 VPN Lobo Rojo 🐺. Todos los derechos reservados.</p>
+            <p>Navegación segura y privada para todos</p>
+        </div>
+    </footer>
+</div>
+
+<!-- ==================== PANEL DE ADMINISTRACIÓN ==================== -->
+<div id="adminApp" class="admin-body" style="display:none;">
+    <!-- Login -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="login-header"><span style="font-size:3.5rem;">🐺</span><h2>Panel Lobo Rojo</h2></div>
+            <form id="loginForm" onsubmit="login(event)">
+                <div class="form-group"><label for="username">Usuario</label><input type="text" id="username" required></div>
+                <div class="form-group"><label for="password">Contraseña</label><input type="password" id="password" required></div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                <p class="login-hint">Usuario por defecto: admin / Contraseña: admin123</p>
+                <p class="login-hint"><a onclick="backToSite()" style="cursor:pointer;color:var(--primary-color);">← Volver al sitio</a></p>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 VPN Premium. Todos los derechos reservados.</p>
-            <p>Navegación segura y privada para todos</p>
-        </div>
-    </footer>
+    <!-- Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display:none;">
+        <aside class="sidebar">
+            <div class="sidebar-header"><span style="font-size:2rem;">🐺</span><span>Lobo Rojo</span></div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a class="nav-item" onclick="showSection('clients')"><i class="fas fa-users"></i> Clientes</a>
+                <a class="nav-item" onclick="showSection('trials')"><i class="fas fa-gift"></i> Solicitudes de Prueba</a>
+                <a class="nav-item" onclick="showSection('alerts')"><i class="fas fa-exclamation-triangle"></i> Alertas</a>
+                <a class="nav-item" onclick="backToSite()"><i class="fas fa-globe"></i> Ver Sitio</a>
+                <a class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="user-info"><span>Administrador</span><i class="fas fa-user-circle"></i></div>
+            </div>
 
-    <script src="js/main.js"></script>
+            <section id="dashboardSection" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card blue"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalClients">0</h3><p>Total Clientes</p></div></div>
+                    <div class="stat-card green"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h3 id="activeClients">0</h3><p>Clientes Activos</p></div></div>
+                    <div class="stat-card orange"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-info"><h3 id="expiringSoon">0</h3><p>Por Vencer (7 días)</p></div></div>
+                    <div class="stat-card red"><div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div><div class="stat-info"><h3 id="pendingPayments">0</h3><p>Pagos Pendientes</p></div></div>
+                </div>
+                <div class="dashboard-charts">
+                    <div class="chart-card"><h3>Alertas Recientes</h3><div id="recentAlerts"></div></div>
+                </div>
+            </section>
+
+            <section id="clientsSection" class="content-section" style="display:none;">
+                <div class="section-header">
+                    <h2>Gestión de Clientes</h2>
+                    <button class="btn btn-primary" onclick="openClientModal()"><i class="fas fa-plus"></i> Nuevo Cliente</button>
+                </div>
+                <div class="filters">
+                    <input type="text" id="searchClient" placeholder="Buscar cliente..." onkeyup="filterClients()">
+                    <select id="filterStatus" onchange="filterClients()">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="vencido">Vencidos</option>
+                        <option value="por_vencer">Por Vencer</option>
+                    </select>
+                    <select id="filterPayment" onchange="filterClients()">
+                        <option value="">Todos los pagos</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="parcial">Pago Parcial</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr>
+                            <th>Nombre</th><th>WhatsApp</th><th>Plan</th><th>Fecha Activación</th><th>Fecha Vencimiento</th><th>Estado Pago</th><th>Monto</th><th>Estado</th><th>Acciones</th>
+                        </tr></thead>
+                        <tbody id="clientsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="trialsSection" class="content-section" style="display:none;">
+                <div class="section-header">
+                    <h2>Solicitudes de Prueba</h2>
+                    <button class="btn btn-secondary" onclick="clearTrials()"><i class="fas fa-trash"></i> Limpiar Procesadas</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr>
+                            <th>Fecha</th><th>Nombre</th><th>WhatsApp</th><th>Email</th><th>Plan Interés</th><th>Comentarios</th><th>Acciones</th>
+                        </tr></thead>
+                        <tbody id="trialsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="alertsSection" class="content-section" style="display:none;">
+                <div class="section-header"><h2>Alertas y Notificaciones</h2></div>
+                <div class="alerts-container" id="alertsContainer"></div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Modal Prueba -->
+<div id="trialModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTrialModal()">&times;</span>
+        <h2><i class="fas fa-gift"></i> Solicitar Prueba Gratuita</h2>
+        <form id="trialForm" onsubmit="submitTrialRequest(event)">
+            <div class="form-group"><label for="name">Nombre Completo *</label><input type="text" id="name" required></div>
+            <div class="form-group"><label for="whatsapp">WhatsApp *</label><input type="tel" id="whatsapp" placeholder="+1 234 567 8900" required></div>
+            <div class="form-group"><label for="email">Email</label><input type="email" id="email"></div>
+            <div class="form-group"><label for="plan">Plan de Interés</label>
+                <select id="plan"><option value="paraguay">🇵🇾 Paraguay - 40.000 Gs/mes</option><option value="argentina">🇦🇷 Argentina - $5.500/mes</option></select>
+            </div>
+            <div class="form-group"><label for="message">Comentarios adicionales</label><textarea id="message" rows="3"></textarea></div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Cliente -->
+<div id="clientModal" class="modal">
+    <div class="modal-content modal-large">
+        <span class="close" onclick="closeClientModal()">&times;</span>
+        <h2 id="clientModalTitle"><i class="fas fa-user-plus"></i> Nuevo Cliente</h2>
+        <form id="clientForm" onsubmit="saveClient(event)">
+            <input type="hidden" id="clientId">
+            <div class="form-row">
+                <div class="form-group"><label for="clientName">Nombre Completo *</label><input type="text" id="clientName" required></div>
+                <div class="form-group"><label for="clientWhatsapp">WhatsApp *</label><input type="tel" id="clientWhatsapp" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label for="clientEmail">Email</label><input type="email" id="clientEmail"></div>
+                <div class="form-group"><label for="clientPlan">Plan *</label>
+                    <select id="clientPlan" required><option value="paraguay">🇵🇾 Paraguay - 40.000 Gs/mes</option><option value="argentina">🇦🇷 Argentina - $5.500/mes</option></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label for="clientActivation">Fecha de Activación *</label><input type="date" id="clientActivation" required></div>
+                <div class="form-group"><label for="clientExpiration">Fecha de Vencimiento *</label><input type="date" id="clientExpiration" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label for="clientPaymentStatus">Estado de Pago *</label>
+                    <select id="clientPaymentStatus" required><option value="pagado">Pagado</option><option value="pendiente">Pendiente</option><option value="parcial">Pago Parcial</option></select>
+                </div>
+                <div class="form-group"><label for="clientAmount">Monto</label><input type="number" id="clientAmount" step="0.01" placeholder="0.00"></div>
+            </div>
+            <div class="form-group"><label for="clientNotes">Notas</label><textarea id="clientNotes" rows="3"></textarea></div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeClientModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cliente</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    /* ============ CONFIGURACIÓN: CAMBIA TU NÚMERO DE WHATSAPP AQUÍ ============ */
+    /* Formato internacional SIN el símbolo +. Paraguay: 595 + número */
+    const MI_WHATSAPP = '595991907709';
+
+    /* ============ CREDENCIALES DEL ADMIN (cámbialas) ============ */
+    const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
+
+    /* ============ NAVEGACIÓN PÚBLICO / ADMIN ============ */
+    function openAdmin() {
+        document.getElementById('publicSite').style.display = 'none';
+        document.getElementById('adminApp').style.display = 'block';
+        if (localStorage.getItem('admin_logged_in')) { showDashboard(); loadDashboardData(); }
+        else { document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('adminDashboard').style.display = 'none'; }
+        window.scrollTo(0, 0);
+    }
+    function backToSite() {
+        document.getElementById('adminApp').style.display = 'none';
+        document.getElementById('publicSite').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('navLinks').classList.remove('active');
+    }
+
+    document.getElementById('mobile-menu')?.addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('active');
+    });
+
+    /* ============ WHATSAPP + PRUEBAS ============ */
+    function contactWhatsApp(plan) {
+        const message = `Hola! Estoy interesado en el ${plan} de VPN Lobo Rojo 🐺`;
+        window.open(`https://wa.me/${MI_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+    function openTrialModal() { document.getElementById('trialModal').style.display = 'block'; }
+    function closeTrialModal() { document.getElementById('trialModal').style.display = 'none'; }
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('trialModal')) closeTrialModal();
+        if (event.target === document.getElementById('clientModal')) closeClientModal();
+    };
+    function submitTrialRequest(event) {
+        event.preventDefault();
+        const formData = {
+            name: document.getElementById('name').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            email: document.getElementById('email').value,
+            plan: document.getElementById('plan').value,
+            message: document.getElementById('message').value,
+            date: new Date().toISOString()
+        };
+        let trials = JSON.parse(localStorage.getItem('vpn_trials') || '[]');
+        trials.push(formData);
+        localStorage.setItem('vpn_trials', JSON.stringify(trials));
+        alert('¡Solicitud enviada! Te contactaremos pronto por WhatsApp.');
+        const adminMessage = `NUEVA SOLICITUD DE PRUEBA\n\nNombre: ${formData.name}\nWhatsApp: ${formData.whatsapp}\nEmail: ${formData.email}\nPlan: ${formData.plan}\nMensaje: ${formData.message}`;
+        window.open(`https://wa.me/${MI_WHATSAPP}?text=${encodeURIComponent(adminMessage)}`, '_blank');
+        document.getElementById('trialForm').reset();
+        closeTrialModal();
+    }
+
+    /* ============ ADMIN: LOGIN ============ */
+    function login(event) {
+        event.preventDefault();
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+            localStorage.setItem('admin_logged_in', 'true');
+            showDashboard(); loadDashboardData();
+        } else { alert('Usuario o contraseña incorrectos'); }
+    }
+    function logout() {
+        localStorage.removeItem('admin_logged_in');
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminDashboard').style.display = 'none';
+    }
+    function showDashboard() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'flex';
+    }
+    function showSection(section) {
+        document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        let sectionId, title;
+        switch(section) {
+            case 'dashboard': sectionId = 'dashboardSection'; title = 'Dashboard'; loadDashboardData(); break;
+            case 'clients': sectionId = 'clientsSection'; title = 'Gestión de Clientes'; loadClients(); break;
+            case 'trials': sectionId = 'trialsSection'; title = 'Solicitudes de Prueba'; loadTrials(); break;
+            case 'alerts': sectionId = 'alertsSection'; title = 'Alertas'; loadAlerts(); break;
+        }
+        document.getElementById(sectionId).style.display = 'block';
+        document.getElementById('sectionTitle').textContent = title;
+        if (event && event.target) event.target.classList.add('active');
+    }
+
+    /* ============ ADMIN: DASHBOARD ============ */
+    function loadDashboardData() {
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const today = new Date();
+        document.getElementById('totalClients').textContent = clients.length;
+        document.getElementById('activeClients').textContent = clients.filter(c => new Date(c.expirationDate) > today).length;
+        document.getElementById('pendingPayments').textContent = clients.filter(c => c.paymentStatus !== 'pagado').length;
+        const sevenDays = new Date(today.getTime() + 7*24*60*60*1000);
+        document.getElementById('expiringSoon').textContent = clients.filter(c => { const e = new Date(c.expirationDate); return e > today && e <= sevenDays; }).length;
+        loadRecentAlerts();
+    }
+    function loadRecentAlerts() {
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const today = new Date();
+        let html = '', count = 0;
+        clients.forEach(client => {
+            const d = Math.ceil((new Date(client.expirationDate) - today) / (1000*60*60*24));
+            if (d < 0) { html += `<div class="alert danger" style="margin-bottom:1rem;"><div class="alert-content"><h4>Servicio Vencido</h4><p>${client.name} - Venció hace ${Math.abs(d)} días</p></div></div>`; count++; }
+            else if (d <= 7) { html += `<div class="alert warning" style="margin-bottom:1rem;"><div class="alert-content"><h4>Vence Pronto</h4><p>${client.name} - Vence en ${d} días</p></div></div>`; count++; }
+            if (client.paymentStatus === 'pendiente' || client.paymentStatus === 'parcial') { html += `<div class="alert warning" style="margin-bottom:1rem;"><div class="alert-content"><h4>Pago ${client.paymentStatus === 'parcial' ? 'Parcial' : 'Pendiente'}</h4><p>${client.name} - ${client.plan}</p></div></div>`; count++; }
+        });
+        if (!html) html = '<div class="empty-state"><i class="fas fa-check-circle"></i><p>No hay alertas</p></div>';
+        document.getElementById('recentAlerts').innerHTML = html;
+    }
+
+    /* ============ ADMIN: CLIENTES ============ */
+    function renderClientRow(client, index) {
+        const status = getClientStatus(client);
+        return `<tr>
+            <td>${client.name}</td>
+            <td><a href="https://wa.me/${client.whatsapp.replace(/\D/g,'')}" target="_blank">${client.whatsapp}</a></td>
+            <td>${client.plan}</td>
+            <td>${formatDate(client.activationDate)}</td>
+            <td>${formatDate(client.expirationDate)}</td>
+            <td>${getPaymentBadge(client.paymentStatus)}</td>
+            <td>$${client.amount || '0.00'}</td>
+            <td>${status.badge}</td>
+            <td><div class="action-buttons">
+                <button class="btn-icon edit" onclick="editClient(${index})" title="Editar"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon whatsapp" onclick="contactClient('${client.whatsapp}')" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                <button class="btn-icon delete" onclick="deleteClient(${index})" title="Eliminar"><i class="fas fa-trash"></i></button>
+            </div></td></tr>`;
+    }
+    function loadClients() {
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const tbody = document.getElementById('clientsTableBody');
+        if (!clients.length) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><i class="fas fa-users"></i><p>No hay clientes registrados</p></td></tr>'; return; }
+        tbody.innerHTML = clients.map((c, i) => renderClientRow(c, i)).join('');
+    }
+    function getClientStatus(client) {
+        const d = Math.ceil((new Date(client.expirationDate) - new Date()) / (1000*60*60*24));
+        if (d < 0) return { badge: '<span class="badge badge-danger">Vencido</span>', status: 'vencido' };
+        if (d <= 7) return { badge: '<span class="badge badge-warning">Por Vencer</span>', status: 'por_vencer' };
+        return { badge: '<span class="badge badge-success">Activo</span>', status: 'activo' };
+    }
+    function getPaymentBadge(status) {
+        const b = { 'pagado': '<span class="badge badge-success">Pagado</span>', 'pendiente': '<span class="badge badge-danger">Pendiente</span>', 'parcial': '<span class="badge badge-warning">Parcial</span>' };
+        return b[status] || b['pendiente'];
+    }
+    function formatDate(s) { return new Date(s).toLocaleDateString('es-ES', { year:'numeric', month:'2-digit', day:'2-digit' }); }
+    function filterClients() {
+        const term = document.getElementById('searchClient').value.toLowerCase();
+        const sf = document.getElementById('filterStatus').value;
+        const pf = document.getElementById('filterPayment').value;
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const tbody = document.getElementById('clientsTableBody');
+        tbody.innerHTML = clients.filter(c => {
+            const ms = c.name.toLowerCase().includes(term) || c.whatsapp.includes(term);
+            const mst = !sf || getClientStatus(c).status === sf;
+            const mp = !pf || c.paymentStatus === pf;
+            return ms && mst && mp;
+        }).map(c => renderClientRow(c, clients.indexOf(c))).join('');
+    }
+    function openClientModal() {
+        document.getElementById('clientModal').style.display = 'block';
+        document.getElementById('clientModalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Nuevo Cliente';
+        document.getElementById('clientForm').reset();
+        document.getElementById('clientId').value = '';
+        document.getElementById('clientActivation').value = new Date().toISOString().split('T')[0];
+    }
+    function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
+    function saveClient(event) {
+        event.preventDefault();
+        const data = {
+            name: document.getElementById('clientName').value,
+            whatsapp: document.getElementById('clientWhatsapp').value,
+            email: document.getElementById('clientEmail').value,
+            plan: document.getElementById('clientPlan').value,
+            activationDate: document.getElementById('clientActivation').value,
+            expirationDate: document.getElementById('clientExpiration').value,
+            paymentStatus: document.getElementById('clientPaymentStatus').value,
+            amount: document.getElementById('clientAmount').value,
+            notes: document.getElementById('clientNotes').value
+        };
+        let clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const id = document.getElementById('clientId').value;
+        if (id !== '') clients[parseInt(id)] = data; else clients.push(data);
+        localStorage.setItem('vpn_clients', JSON.stringify(clients));
+        closeClientModal(); loadClients(); loadDashboardData();
+        alert('Cliente guardado exitosamente');
+    }
+    function editClient(index) {
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const c = clients[index];
+        document.getElementById('clientId').value = index;
+        document.getElementById('clientName').value = c.name;
+        document.getElementById('clientWhatsapp').value = c.whatsapp;
+        document.getElementById('clientEmail').value = c.email || '';
+        document.getElementById('clientPlan').value = c.plan;
+        document.getElementById('clientActivation').value = c.activationDate;
+        document.getElementById('clientExpiration').value = c.expirationDate;
+        document.getElementById('clientPaymentStatus').value = c.paymentStatus;
+        document.getElementById('clientAmount').value = c.amount || '';
+        document.getElementById('clientNotes').value = c.notes || '';
+        document.getElementById('clientModalTitle').innerHTML = '<i class="fas fa-user-edit"></i> Editar Cliente';
+        document.getElementById('clientModal').style.display = 'block';
+    }
+    function deleteClient(index) {
+        if (confirm('¿Estás seguro de eliminar este cliente?')) {
+            let clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+            clients.splice(index, 1);
+            localStorage.setItem('vpn_clients', JSON.stringify(clients));
+            loadClients(); loadDashboardData();
+        }
+    }
+    function contactClient(whatsapp) { window.open(`https://wa.me/${whatsapp.replace(/\D/g,'')}`, '_blank'); }
+
+    /* ============ ADMIN: PRUEBAS ============ */
+    function loadTrials() {
+        const trials = JSON.parse(localStorage.getItem('vpn_trials') || '[]');
+        const tbody = document.getElementById('trialsTableBody');
+        if (!trials.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-gift"></i><p>No hay solicitudes de prueba</p></td></tr>'; return; }
+        tbody.innerHTML = trials.map((t, i) => `<tr>
+            <td>${formatDate(t.date)}</td><td>${t.name}</td>
+            <td><a href="https://wa.me/${t.whatsapp.replace(/\D/g,'')}" target="_blank">${t.whatsapp}</a></td>
+            <td>${t.email || '-'}</td><td><span class="badge badge-info">${t.plan}</span></td><td>${t.message || '-'}</td>
+            <td><div class="action-buttons">
+                <button class="btn-icon whatsapp" onclick="contactClient('${t.whatsapp}')" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                <button class="btn-icon delete" onclick="deleteTrial(${i})" title="Eliminar"><i class="fas fa-trash"></i></button>
+            </div></td></tr>`).join('');
+    }
+    function deleteTrial(index) {
+        if (confirm('¿Eliminar esta solicitud?')) {
+            let trials = JSON.parse(localStorage.getItem('vpn_trials') || '[]');
+            trials.splice(index, 1);
+            localStorage.setItem('vpn_trials', JSON.stringify(trials));
+            loadTrials();
+        }
+    }
+    function clearTrials() {
+        if (confirm('¿Limpiar todas las solicitudes procesadas?')) { localStorage.setItem('vpn_trials', '[]'); loadTrials(); }
+    }
+
+    /* ============ ADMIN: ALERTAS ============ */
+    function loadAlerts() {
+        const clients = JSON.parse(localStorage.getItem('vpn_clients') || '[]');
+        const today = new Date();
+        let html = '';
+        clients.forEach(client => {
+            const d = Math.ceil((new Date(client.expirationDate) - today) / (1000*60*60*24));
+            if (d < 0) html += `<div class="alert danger"><div class="alert-content"><h4>Servicio Vencido</h4><p><strong>${client.name}</strong> - Plan ${client.plan}</p><p>Venció hace ${Math.abs(d)} días (${formatDate(client.expirationDate)})</p></div><button class="btn-icon whatsapp" onclick="contactClient('${client.whatsapp}')"><i class="fab fa-whatsapp"></i></button></div>`;
+            else if (d <= 7) html += `<div class="alert warning"><div class="alert-content"><h4>Vence Pronto</h4><p><strong>${client.name}</strong> - Plan ${client.plan}</p><p>Vence en ${d} días (${formatDate(client.expirationDate)})</p></div><button class="btn-icon whatsapp" onclick="contactClient('${client.whatsapp}')"><i class="fab fa-whatsapp"></i></button></div>`;
+            if (client.paymentStatus === 'pendiente') html += `<div class="alert danger"><div class="alert-content"><h4>Pago Pendiente</h4><p><strong>${client.name}</strong> - Plan ${client.plan}</p><p>No ha realizado el pago</p></div><button class="btn-icon whatsapp" onclick="contactClient('${client.whatsapp}')"><i class="fab fa-whatsapp"></i></button></div>`;
+            if (client.paymentStatus === 'parcial') html += `<div class="alert warning"><div class="alert-content"><h4>Pago Parcial</h4><p><strong>${client.name}</strong> - Plan ${client.plan}</p><p>Pago incompleto - Monto: $${client.amount || '0.00'}</p></div><button class="btn-icon whatsapp" onclick="contactClient('${client.whatsapp}')"><i class="fab fa-whatsapp"></i></button></div>`;
+        });
+        if (!html) html = '<div class="empty-state"><i class="fas fa-check-circle"></i><p>No hay alertas pendientes</p></div>';
+        document.getElementById('alertsContainer').innerHTML = html;
+    }
+
+    /* ============ CÁLCULO AUTOMÁTICO DE VENCIMIENTO ============ */
+    function recalcExpiration() {
+        const plan = document.getElementById('clientPlan').value;
+        const act = document.getElementById('clientActivation').value;
+        if (!plan || !act) return;
+        let exp = new Date(act);
+        // Ambos planes (Paraguay y Argentina) son mensuales: +1 mes
+        exp.setMonth(exp.getMonth() + 1);
+        document.getElementById('clientExpiration').value = exp.toISOString().split('T')[0];
+    }
+    document.getElementById('clientPlan')?.addEventListener('change', recalcExpiration);
+    document.getElementById('clientActivation')?.addEventListener('change', recalcExpiration);
+</script>
 </body>
 </html>
